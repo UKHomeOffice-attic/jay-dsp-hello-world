@@ -23,24 +23,24 @@ pipeline:
       branch: master
       event: push
 
-  clone_deployment_scripts:
+  predeploy_to_uat:
     image: plugins/git
     commands:
-      - git clone https://${GITHUB_TOKEN}:x-oauth-basic@github.com/UKHomeOffice/jay-dsp-hello-world kube1
+      - git clone https://${GITHUB_TOKEN}:x-oauth-basic@github.com/UKHomeOffice/jay-dsp-hello-world.git
     when:
-      branch: master
-      event: push    
+      environment: uat
+      event: deployment    
 
-  deploy_to_dev:
-    image: quay.io/ukhomeofficedigital/kd:v0.2.2
+  deploy_to_uat:
+    image: quay.io/ukhomeofficedigital/kd:v0.2.3
     environment:
-      - KUBE_NAMESPACE=dev-induction
+      - KUBE_NAMESPACE=<dev-induction>
     commands:
-      - cd kube1
+      - cd <kube-node-hello-world>
       - ./deploy.sh
     when:
-      environment: master
-      event: push
+      environment: uat
+      event: deployment
 
 services:
   dind:
