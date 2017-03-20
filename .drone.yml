@@ -11,6 +11,18 @@ pipeline:
       branch: master
       event: push
 
+  image_to_quay:
+    image: docker:1.11
+    environment: 
+      - DOCKER_HOST=tcp://localhost:2375
+    commands:
+      - docker login -u="jaynqac" -p=${DOCKER_PASSWORD} quay.io
+      - docker tag myhelloworld quay.io/ukhomeofficedigital/myhelloworld:${DRONE_COMMIT_SHA}
+      - docker push quay.io/ukhomeofficedigital/myhelloworld:${DRONE_COMMIT_SHA}
+    when:
+      branch: master
+      event: push
+
 services:
   dind:
     image: docker:1.11-dind
