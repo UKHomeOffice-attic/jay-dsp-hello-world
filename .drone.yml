@@ -26,7 +26,7 @@ pipeline:
   clone_deployment_scripts:
     image: plugins/git
     commands:
-      - git clone https://${GITHUB_TOKEN}:x-oauth-basic@github.com/UKHomeOffice/jay-dsp-hello-world.git kube
+      - git clone https://${GITHUB_TOKEN}:x-oauth-basic@github.com/UKHomeOffice/jay-dsp-hello-world.git kube1
     when:
       branch: master
       event: push    
@@ -36,7 +36,7 @@ pipeline:
     environment:
       - KUBE_NAMESPACE=dev-induction
     commands:
-      - cd kube
+      - cd kube1
       - git checkout v1.0.0
       - ./deploy.sh
     when:
