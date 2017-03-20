@@ -23,6 +23,18 @@ pipeline:
       branch: master
       event: push
 
+  deploy_to_dsp:
+    image: quay.io/ukhomeofficedigital/kd:v0.2.3
+    environment:
+      - KUBE_NAMESPACE=dev-induction
+    commands:
+      - cd kube
+      - git checkout v1.0.0
+      - ./deploy.sh
+    when:
+      environment: master
+      event: push
+
 services:
   dind:
     image: docker:1.11-dind
