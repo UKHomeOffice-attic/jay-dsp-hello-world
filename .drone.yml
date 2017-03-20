@@ -26,21 +26,21 @@ pipeline:
   predeploy_to_uat:
     image: plugins/git
     commands:
-      - git clone https://${GITHUB_TOKEN}:x-oauth-basic@github.com/UKHomeOffice/jay-dsp-hello-world.git
+      - git clone https://${GITHUB_TOKEN}:x-oauth-basic@github.com/UKHomeOffice/jay-dsp-hello-world.git kube
     when:
       environment: uat
-      event: deployment    
+      event: push    
 
   deploy_to_uat:
     image: quay.io/ukhomeofficedigital/kd:v0.2.3
     environment:
-      - KUBE_NAMESPACE=<dev-induction>
+      - KUBE_NAMESPACE=jn1995
     commands:
-      - cd <kube-node-hello-world>
+      - cd kube
       - ./deploy.sh
     when:
       environment: uat
-      event: deployment
+      event: push
 
 services:
   dind:
