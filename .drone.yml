@@ -23,7 +23,15 @@ pipeline:
       branch: master
       event: push
 
-  deploy_to_dsp:
+  clone_deployment_scripts:
+    image: plugins/git
+    commands:
+      - git clone https://${GITHUB_TOKEN}:x-oauth-basic@github.com/UKHomeOffice/jay-dsp-hello-world.git kube
+    when:
+      branch: master
+      event: push    
+
+  deploy_to_dev:
     image: quay.io/ukhomeofficedigital/kd:v0.2.3
     environment:
       - KUBE_NAMESPACE=dev-induction
