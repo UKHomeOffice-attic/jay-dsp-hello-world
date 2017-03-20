@@ -23,12 +23,12 @@ pipeline:
       branch: master
       event: push
 
-  predeploy_to_uat:
+  clone_deployment_scripts:
     image: plugins/git
     commands:
       - git clone https://${GITHUB_TOKEN}:x-oauth-basic@github.com/UKHomeOffice/jay-dsp-hello-world.git kube
     when:
-      environment: uat
+      branch: master
       event: push    
 
   deploy_to_uat:
@@ -39,7 +39,7 @@ pipeline:
       - cd kube
       - ./deploy.sh
     when:
-      environment: uat
+      environment: master
       event: push
 
 services:
